@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Cool Papers Modern Styler",
+    "version": "1.0",
+    "description": "Restyles papers.cool pages with a modern look.",
+    "permissions": ["activeTab", "scripting"],
+    "host_permissions": ["https://papers.cool/arxiv/*", "https://papers.cool/venue/*"],
+    "content_scripts": [
+      {
+        "matches": ["https://papers.cool/arxiv/*", "https://papers.cool/venue/*"],
+        "css": ["styles.css"],
+        "js": ["lib/marked.min.js", "content.js"],
+        "run_at": "document_idle"
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": ["/images/*", "lib/marked.min.js"],
+        "matches": ["https://papers.cool/*"]
+      }
+    ],
+    "icons": {
+      "48": "icons/cat.png",
+      "128": "icons/cat.png"
+    }
+  }
+  

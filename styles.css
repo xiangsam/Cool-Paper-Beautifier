@@ -1,0 +1,464 @@
+/* General Body and Container Styles (from test.html, adapted) */
+body.transformed-body {
+    font-family: 'Roboto', sans-serif !important;
+    background-color: #f5f5f5 !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    color: #333 !important;
+    background-image: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%) !important;
+    min-height: 100vh !important;
+}
+
+.transformed-container {
+    max-width: 900px !important; /* Increased from 800px for more content */
+    margin: 0 auto !important;
+    background-color: rgba(255, 255, 255, 0.9) !important; /* Slightly more opaque */
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15) !important;
+    padding: 24px !important;
+    position: relative !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+
+/* Header Styles */
+.transformed-header {
+    text-align: center !important;
+    margin-bottom: 32px !important;
+}
+
+.transformed-header h1 {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 8px !important;
+}
+
+.transformed-header p.subtitle {
+    font-size: 16px !important;
+    color: #666 !important;
+    margin-bottom: 20px !important;
+}
+
+.transformed-header .info-controls {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Reduced gap */
+    flex-wrap: wrap;
+    padding: 10px;
+    background-color: rgba(230, 230, 230, 0.5);
+    border-radius: 8px;
+}
+
+.transformed-header .info-controls .date-display {
+    font-weight: 600; /* Bolder date */
+    color: #3498db;
+    padding: 5px 8px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.transformed-header .info-controls .shortcut,
+.transformed-header .info-controls .feed-it {
+    cursor: pointer;
+    padding: 6px 10px; /* Slightly more padding */
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    color: #3498db;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #ddd;
+}
+
+.transformed-header .info-controls .shortcut:hover,
+.transformed-header .info-controls .feed-it:hover {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.transformed-header .info-controls .shortcut i,
+.transformed-header .info-controls .feed-it i {
+    margin-right: 4px;
+}
+.transformed-header .info-controls .total-papers {
+    font-weight: 500;
+    color: #555;
+    padding: 5px 8px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+
+/* Paper Block Styles */
+.paper-block {
+    margin-bottom: 24px !important;
+    padding: 20px !important;
+    border-radius: 8px !important;
+    background-color: rgba(252, 252, 253, 0.95) !important;
+    border: 1px solid #e0e0e0 !important;
+    opacity: 0; /* For animation */
+    transform: translateY(20px); /* For animation */
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    position: relative !important;
+}
+
+.paper-block:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.paper-block.visible { /* For JS animation */
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+.paper-title {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #2c3e50 !important;
+    margin-bottom: 12px !important;
+    position: relative !important;
+    padding-bottom: 8px !important;
+    transition: color 0.3s ease !important;
+}
+
+.paper-title a {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.paper-title::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 50px !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, #3498db, #9b59b6) !important;
+    transition: width 0.3s ease !important;
+}
+
+.paper-block:hover .paper-title::after {
+    width: 100% !important;
+}
+
+.paper-block:hover .paper-title a {
+    color: #3498db !important;
+}
+
+/* Metadata Grid */
+.paper-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjusted minmax */
+    gap: 10px;
+    margin-bottom: 16px;
+    font-size: 13px; /* Slightly smaller for denser info */
+    color: #555;
+}
+.paper-meta-grid > div {
+    padding: 5px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.paper-authors strong, .paper-subjects strong, .paper-date strong, .paper-id strong, .paper-interactions strong {
+    color: #333;
+    margin-right: 5px;
+    display: block; /* Make strong tags block for better separation */
+    margin-bottom: 3px;
+}
+
+.paper-authors .author-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.paper-authors .author-item {
+    color: #007bff;
+    text-decoration: none;
+    background-color: #e9ecef;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+.paper-authors .author-item:hover {
+    text-decoration: underline;
+    background-color: #d0d6db;
+}
+
+.paper-subjects .subject-item {
+    display: inline-block;
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 3px 8px; /* Increased padding */
+    border-radius: 4px;
+    margin-right: 5px;
+    margin-bottom: 4px; /* Increased margin */
+    font-size: 12px;
+}
+
+.paper-abstract, .paper-tldr {
+    font-size: 14px !important;
+    color: #444 !important;
+    line-height: 1.6 !important;
+    margin-bottom: 16px !important;
+}
+
+.paper-tldr {
+    font-style: italic !important;
+    padding: 10px !important; /* Added padding */
+    border-left: 3px solid #3498db !important;
+    background-color: #f8f9fa; /* Light background for TLDR */
+    border-radius: 0 4px 4px 0;
+}
+
+/* Action Buttons */
+.paper-actions {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: center !important;
+    flex-wrap: wrap !important; /* Allow buttons to wrap */
+    margin-top: 16px; /* Added margin-top */
+}
+
+.paper-actions a, .paper-actions button {
+    text-decoration: none !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #fff !important;
+    background-color: #3498db !important;
+    padding: 8px 14px !important;
+    border-radius: 6px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border: none !important;
+    cursor: pointer !important;
+    display: inline-flex !important; /* For icon alignment */
+    align-items: center !important; /* For icon alignment */
+}
+
+.paper-actions a i, .paper-actions button i {
+    margin-right: 6px !important; /* Space between icon and text */
+}
+
+.paper-actions a:hover, .paper-actions button:hover {
+    background-color: #2980b9 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4) !important;
+}
+
+.paper-actions a:active, .paper-actions button:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3) !important;
+}
+
+.paper-actions a::before, .paper-actions button::before { /* Shimmer effect */
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: -100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+    transition: left 0.7s ease !important;
+}
+
+.paper-actions a:hover::before, .paper-actions button:hover::before {
+    left: 100% !important;
+}
+
+/* Specific button colors */
+.paper-actions .pdf-btn { background-color: #d9534f !important; } /* Reddish for PDF */
+.paper-actions .pdf-btn:hover { background-color: #c9302c !important; }
+.paper-actions .kimi-btn { background-color: #5bc0de !important; } /* Light blue for Kimi */
+.paper-actions .kimi-btn:hover { background-color: #31b0d5 !important; }
+.paper-actions .copy-btn { background-color: #5cb85c !important; } /* Green for copy */
+.paper-actions .copy-btn:hover { background-color: #4cae4c !important; }
+.paper-actions .rel-btn { background-color: #f0ad4e !important; } /* Orange for related */
+.paper-actions .rel-btn:hover { background-color: #ec971f !important; }
+
+
+/* Footer Styles */
+.transformed-footer {
+    text-align: center !important;
+    font-size: 12px !important;
+    color: #888 !important;
+    margin-top: 32px !important; /* Increased margin */
+    padding-top: 20px !important; /* Increased padding */
+    border-top: 1px solid #ddd !important;
+}
+
+.transformed-footer a {
+    color: #3498db !important;
+    text-decoration: none !important;
+}
+
+.transformed-footer a:hover {
+    text-decoration: underline !important;
+}
+
+/* Back to Top Button */
+.back-to-top-button {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    background-color: #3498db !important;
+    color: #fff !important;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    text-decoration: none !important;
+    font-size: 24px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    z-index: 1000 !important;
+}
+
+.back-to-top-button.visible {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.back-to-top-button:hover {
+    background-color: #2980b9 !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Progress Bar */
+.progress-container {
+    position: sticky !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 5px !important;
+    background: transparent !important; 
+    z-index: 1001 !important;
+}
+
+.progress-bar {
+    height: 5px !important;
+    background: linear-gradient(90deg, #3498db, #9b59b6) !important;
+    width: 0% !important;
+    border-radius: 0 2px 2px 0 !important;
+}
+
+/* Hide original cool_paper elements that are replaced or not needed */
+body > h1.notranslate, 
+body > p.info.notranslate,
+body > div.papers,
+body > div.footer.notranslate,
+body > div#app-bar,
+body > div#scroll-btn {
+    display: none !important;
+}
+
+
+/* Kimi Content Display */
+.transformed-kimi-content {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #fdfdff; /* A very light, almost white-blue */
+    border: 1px solid #e0e7ef; 
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.7; /* Increased line height for readability */
+    color: #333;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.transformed-kimi-content h1, 
+.transformed-kimi-content h2, 
+.transformed-kimi-content h3, 
+.transformed-kimi-content h4 {
+    color: #2c3e50;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #dde4eb;
+}
+.transformed-kimi-content h1 { font-size: 1.4em; }
+.transformed-kimi-content h2 { font-size: 1.3em; }
+.transformed-kimi-content h3 { font-size: 1.2em; }
+.transformed-kimi-content h4 { font-size: 1.1em; }
+
+
+.transformed-kimi-content p {
+    margin-bottom: 12px;
+}
+
+.transformed-kimi-content ul, .transformed-kimi-content ol {
+    margin-left: 25px; /* Indent lists */
+    margin-bottom: 12px;
+    padding-left: 0; /* Reset default padding if any */
+}
+.transformed-kimi-content li {
+    margin-bottom: 6px;
+}
+
+.transformed-kimi-content pre {
+    background-color: #2d2d2d; /* Darker background for code blocks */
+    color: #f8f8f2; /* Light text for code */
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.transformed-kimi-content code { 
+    background-color: #e9ecef;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em; /* Slightly smaller than surrounding text */
+    color: #c7254e; /* A common color for inline code */
+}
+.transformed-kimi-content pre code { /* Reset for code inside pre */
+    background-color: transparent;
+    padding: 0;
+    color: inherit; 
+    font-size: inherit;
+}
+
+.transformed-kimi-content blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    margin-left: 0;
+    margin-right: 0;
+    color: #555;
+    font-style: italic;
+}
+
+.transformed-kimi-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.transformed-kimi-content th, .transformed-kimi-content td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.transformed-kimi-content th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Hide original Kimi container if it becomes visible due to original script */
+div[id^="kimi-container-"] {
+    display: none !important;
+}
