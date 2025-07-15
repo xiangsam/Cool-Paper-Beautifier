@@ -28,6 +28,26 @@ function applyModernStyle() {
     progressContainer.appendChild(progressBar);
     document.body.insertBefore(progressContainer, document.body.firstChild);
 
+    // Dark Mode Toggle Button
+    const darkModeToggle = document.createElement('button');
+    darkModeToggle.id = 'dark-mode-toggle';
+    darkModeToggle.className = 'dark-mode-toggle';
+    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    document.body.appendChild(darkModeToggle);
+
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+        darkModeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+
     // Transform Header
     const originalHeaderTitleEl = document.querySelector('body > h1.notranslate');
     const originalHeaderInfoEl = document.querySelector('body > p.info.notranslate');
@@ -83,7 +103,7 @@ function applyModernStyle() {
     if (originalPapersContainer) {
         const papers = originalPapersContainer.querySelectorAll('.panel.paper');
         papers.forEach((paper, index) => {
-            const paperId = paper.id; 
+            const paperId = paper.id;
             const escapedPaperIdForQuery = paperId.replace(/([\.@])/g, '\\$1');
 
             const titleHeaderEl = paper.querySelector('h2.title');
@@ -97,7 +117,7 @@ function applyModernStyle() {
 
             const titleLinkEl = paper.querySelector(`a#title-${escapedPaperIdForQuery}.title-link`);
             const titleText = titleLinkEl ? titleLinkEl.textContent.trim() : 'N/A';
-            const coolPaperInternalLink = titleLinkEl ? titleLinkEl.href : '#'; 
+            const coolPaperInternalLink = titleLinkEl ? titleLinkEl.href : '#';
 
             let externalSourceLink = null;
             const arxivAbsLinkEl = paper.querySelector(`h2.title > a[href*="arxiv.org/abs/"]`);
@@ -105,12 +125,12 @@ function applyModernStyle() {
 
             if (arxivAbsLinkEl) {
                 externalSourceLink = arxivAbsLinkEl.href;
-            } else if (venueLinkEl && venueLinkEl.href && !venueLinkEl.href.includes('papers.cool/venue/')) { 
+            } else if (venueLinkEl && venueLinkEl.href && !venueLinkEl.href.includes('papers.cool/venue/')) {
                 externalSourceLink = venueLinkEl.href;
             } else if (titleLinkEl && titleLinkEl.href.startsWith('http') && !titleLinkEl.href.includes('papers.cool')) {
-                 externalSourceLink = titleLinkEl.href; 
+                 externalSourceLink = titleLinkEl.href;
             }
-            
+
             const authors = Array.from(paper.querySelectorAll(`#authors-${escapedPaperIdForQuery} a.author`)).map(a => ({
                 name: a.textContent.trim(),
                 href: a.href
@@ -127,18 +147,18 @@ function applyModernStyle() {
                     href: s.href ? new URL(s.href, window.location.origin).href : '#'
                 };
             });
-            
+
             const dateEl = paper.querySelector(`#date-${escapedPaperIdForQuery}.metainfo.date`);
-            const publishDateText = dateEl ? dateEl.textContent.replace('Publish:', '').trim() : 'Venue Paper'; 
+            const publishDateText = dateEl ? dateEl.textContent.replace('Publish:', '').trim() : 'Venue Paper';
 
             // PDF Interactions & Link Logic
             const pdfLinkOriginalEl = paper.querySelector(`#pdf-${escapedPaperIdForQuery}.title-pdf`);
-            let pdfInteractions = '0'; 
-            let pdfActionUrl = '#'; 
+            let pdfInteractions = '0';
+            let pdfActionUrl = '#';
 
             if (pdfLinkOriginalEl) {
                 const onclickAttr = pdfLinkOriginalEl.getAttribute('onclick');
-                let originalPdfUrlArg = ''; 
+                let originalPdfUrlArg = '';
 
                 if (onclickAttr) {
                     const onclickArgsMatch = onclickAttr.match(/togglePdf\s*\(\s*['"][^'"]+['"]\s*,\s*['"]([^'"]+)['"]/);
@@ -157,8 +177,8 @@ function applyModernStyle() {
                     pdfActionUrl = `/static/pdf.js/web/viewer.html?file=${encodeURIComponent(originalPdfUrlArg)}`;
                 }
                 else if (externalSourceLink) {
-                    if (externalSourceLink.includes("aclanthology.org") && 
-                        externalSourceLink.match(/\/\d{4}\.[a-zA-Z]+-[\w\.]+\.\d+\/?$/)) { 
+                    if (externalSourceLink.includes("aclanthology.org") &&
+                        externalSourceLink.match(/\/\d{4}\.[a-zA-Z]+-[\w\.]+\.\d+\/?$/)) {
                         pdfActionUrl = externalSourceLink.endsWith('/') ? externalSourceLink + "pdf" : externalSourceLink + ".pdf";
                     }
                     else if (externalSourceLink.includes("ojs.aaai.org/index.php/AAAI/article/view/")) {
@@ -168,11 +188,11 @@ function applyModernStyle() {
                            const downloadId = downloadIdMatch ? downloadIdMatch[1] : viewMatch[1];
                            pdfActionUrl = externalSourceLink.replace(/view\/\d+(\/\d+)?/, `download/${viewMatch[1]}/${downloadId}`);
                         } else {
-                           pdfActionUrl = originalPdfUrlArg || externalSourceLink || '#'; 
+                           pdfActionUrl = originalPdfUrlArg || externalSourceLink || '#';
                         }
                     }
                     else {
-                        pdfActionUrl = originalPdfUrlArg || externalSourceLink || '#'; 
+                        pdfActionUrl = originalPdfUrlArg || externalSourceLink || '#';
                     }
                 }
                 else {
@@ -185,10 +205,10 @@ function applyModernStyle() {
                     pdfInteractions = interactionsText === "" ? '0' : interactionsText;
                 }
             }
-            
+
             // Kimi Interactions
             const kimiLinkOriginalEl = paper.querySelector(`#kimi-${escapedPaperIdForQuery}.title-kimi`);
-            let kimiInteractions = '0'; 
+            let kimiInteractions = '0';
             if (kimiLinkOriginalEl) {
                 const supEl = kimiLinkOriginalEl.querySelector('sup');
                 if (supEl) {
@@ -196,32 +216,32 @@ function applyModernStyle() {
                     kimiInteractions = interactionsText === "" ? '0' : interactionsText;
                 }
             }
-            
+
             const kimiContextLink = externalSourceLink || coolPaperInternalLink;
 
             const paperBlock = document.createElement('div');
             paperBlock.className = 'paper-block';
-            
+
             let authorsHTML = authors.map(author => `<a href="${author.href}" target="_blank" class="author-item">${author.name}</a>`).join('');
             let subjectsHTML = subjects.map(s => `<a href="${s.href}" target="_blank" class="subject-item">${s.text}</a>`).join(' ');
 
             const displayTitle = paperIndexStr + titleText;
-            
+
             let titleHTML;
-            const arxivIdRegex = /^\d{4}\.\d{4,5}(v\d+)?$/; 
+            const arxivIdRegex = /^\d{4}\.\d{4,5}(v\d+)?$/;
             const isStrictNumericArxivId = arxivIdRegex.test(paperId);
             let isArxivPaperForTitleLink = false;
 
             if (externalSourceLink && externalSourceLink.includes('arxiv.org/abs/')) {
                 isArxivPaperForTitleLink = true;
-            } else if (isStrictNumericArxivId && !paperId.includes('@')) { 
+            } else if (isStrictNumericArxivId && !paperId.includes('@')) {
                 isArxivPaperForTitleLink = true;
             }
 
             if (isArxivPaperForTitleLink) {
-                let arxivAbsLink = externalSourceLink; 
+                let arxivAbsLink = externalSourceLink;
                 if (!arxivAbsLink || !arxivAbsLink.includes('arxiv.org/abs/')) {
-                    arxivAbsLink = `https://arxiv.org/abs/${paperId}`; 
+                    arxivAbsLink = `https://arxiv.org/abs/${paperId}`;
                 }
                 titleHTML = `<a href="${arxivAbsLink}" target="_blank">${displayTitle}</a>`;
             } else {
@@ -236,7 +256,7 @@ function applyModernStyle() {
                     <div class="paper-date"><strong>Publish Date:</strong> ${publishDateText}</div>
                     <div class="paper-id"><strong>ID:</strong> ${paperId}</div>
                     <div class="paper-interactions">
-                        <strong>Interactions:</strong> 
+                        <strong>Interactions:</strong>
                         PDF Views: ${pdfInteractions} | Kimi Reads: ${kimiInteractions}
                     </div>
                 </div>
@@ -248,8 +268,7 @@ function applyModernStyle() {
                     <button class="rel-btn" data-paper-id="${paperId}"><i class="fas fa-link"></i> Related</button>
                 </div>
                 <div class="transformed-kimi-content" id="transformed-kimi-container-${paperId}" style="display: none;">
-                    <!-- Kimi content will be loaded here -->
-                </div>
+                    </div>
             `;
             newPapersContainer.appendChild(paperBlock);
             setTimeout(() => paperBlock.classList.add('visible'), index * 50);
@@ -258,9 +277,9 @@ function applyModernStyle() {
 
         newPapersContainer.querySelectorAll('.kimi-btn').forEach(button => {
             button.addEventListener('click', async () => {
-                const currentPaperId = button.dataset.paperId; 
+                const currentPaperId = button.dataset.paperId;
                 const transformedKimiContainer = document.getElementById(`transformed-kimi-container-${currentPaperId}`);
-                const originalKimiButton = document.getElementById(`kimi-${currentPaperId}`); 
+                const originalKimiButton = document.getElementById(`kimi-${currentPaperId}`);
                 const originalKimiDisplayContainer = document.getElementById(`kimi-container-${currentPaperId}`);
 
                 if (!transformedKimiContainer) {
@@ -268,18 +287,18 @@ function applyModernStyle() {
                     alert("Could not process Kimi request for this paper (UI element missing).");
                     return;
                 }
-                
+
                 let effectiveOriginalKimiButton = originalKimiButton;
                 let effectiveOriginalKimiDisplayContainer = originalKimiDisplayContainer;
 
                 if (!effectiveOriginalKimiButton) {
-                    const paperElement = document.getElementById(currentPaperId); 
+                    const paperElement = document.getElementById(currentPaperId);
                     if (paperElement) {
                         effectiveOriginalKimiButton = paperElement.querySelector('.title-kimi');
                     }
                 }
                 if (!effectiveOriginalKimiDisplayContainer) {
-                     const paperElement = document.getElementById(currentPaperId); 
+                     const paperElement = document.getElementById(currentPaperId);
                      if (paperElement) {
                         effectiveOriginalKimiDisplayContainer = paperElement.querySelector('.kimi-container');
                      }
@@ -305,10 +324,10 @@ function applyModernStyle() {
                                 window.toggleKimi(currentPaperId, effectiveOriginalKimiButton);
                             }
                         }
-                        
+
                         let pollAttempts = 0;
-                        const maxPollAttempts = 20; 
-                        const pollInterval = 2000; 
+                        const maxPollAttempts = 20;
+                        const pollInterval = 2000;
 
                         const pollForKimiContent = () => {
                             pollAttempts++;
@@ -325,9 +344,9 @@ function applyModernStyle() {
                                 return;
                             }
 
-                            if (!isOriginalLoading || pollAttempts > 5 || !effectiveOriginalKimiButton) { 
-                                let bodyId = document.body.id; 
-                                if (!bodyId) { 
+                            if (!isOriginalLoading || pollAttempts > 5 || !effectiveOriginalKimiButton) {
+                                let bodyId = document.body.id;
+                                if (!bodyId) {
                                    if (window.location.pathname.includes('/arxiv/')) bodyId = 'arxiv';
                                    else if (window.location.pathname.includes('/venue/')) bodyId = 'venue';
                                 }
@@ -339,22 +358,22 @@ function applyModernStyle() {
                                    button.disabled = false;
                                    return;
                                 }
-                                
+
                                 const xhrFetchKimi = new XMLHttpRequest();
-                                xhrFetchKimi.open('POST', `/${bodyId}/kimi?paper=${currentPaperId}`, true); 
-                                
+                                xhrFetchKimi.open('POST', `/${bodyId}/kimi?paper=${currentPaperId}`, true);
+
                                 xhrFetchKimi.onload = function() {
                                     if (xhrFetchKimi.status >= 200 && xhrFetchKimi.status < 300) {
                                         let rawContent = xhrFetchKimi.responseText;
-                                        
-                                        if (typeof marked === 'function') { 
+
+                                        if (typeof marked === 'function') {
                                             try {
                                                 transformedKimiContainer.innerHTML = marked.parse(rawContent);
                                             } catch (e) {
                                                 console.error("Error parsing Markdown with injected marked.js:", e);
-                                                transformedKimiContainer.textContent = rawContent; 
+                                                transformedKimiContainer.textContent = rawContent;
                                             }
-                                        } else if (typeof window.marked === 'function') { 
+                                        } else if (typeof window.marked === 'function') {
                                             try {
                                                 transformedKimiContainer.innerHTML = window.marked.parse(rawContent);
                                             } catch (e) {
@@ -398,7 +417,7 @@ function applyModernStyle() {
                                 xhrFetchKimi.send();
                             } else if (pollAttempts < maxPollAttempts) {
                                 setTimeout(pollForKimiContent, pollInterval);
-                            } else { 
+                            } else {
                                 transformedKimiContainer.innerHTML = '<p>Error: Timed out waiting for Kimi to become ready.</p>';
                                 button.innerHTML = `<i class="fas fa-robot"></i> Show Kimi Analysis (Timeout)`;
                                 button.dataset.kimiLoaded = 'false';
@@ -406,7 +425,7 @@ function applyModernStyle() {
                                 if (effectiveOriginalKimiButton) effectiveOriginalKimiButton.dataset.clickable = 'true';
                             }
                         };
-                        setTimeout(pollForKimiContent, pollInterval); 
+                        setTimeout(pollForKimiContent, pollInterval);
                     }
                 }
             });
@@ -415,7 +434,7 @@ function applyModernStyle() {
         newPapersContainer.querySelectorAll('.copy-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const currentPaperId = button.dataset.paperId;
-                const paperBlock = button.closest('.paper-block'); 
+                const paperBlock = button.closest('.paper-block');
                 if (!paperBlock) {
                      alert("Error copying info: Transformed paper data not found."); return;
                 }
@@ -423,9 +442,9 @@ function applyModernStyle() {
                 const titleEl = paperBlock.querySelector(`.paper-title a, .paper-title span`);
                 const title = titleEl ? titleEl.textContent.trim() : "N/A";
                 const summary = paperBlock.querySelector(`.paper-abstract`)?.textContent.replace('Abstract:', '').trim() || "N/A";
-                
+
                 let link = "#";
-                const originalPaperEl = document.getElementById(currentPaperId); 
+                const originalPaperEl = document.getElementById(currentPaperId);
                 if (originalPaperEl) {
                     const arxivLinkEl = originalPaperEl.querySelector(`h2.title > a[href*="arxiv.org/abs/"]`);
                     if (arxivLinkEl) {
@@ -441,7 +460,7 @@ function applyModernStyle() {
                         }
                     }
                 }
-                
+
                 navigator.clipboard.writeText(`${title}\nLink: ${link}\nSummary: ${summary.substring(0,250)}...`)
                     .then(() => {
                         button.innerHTML = '<i class="fas fa-check"></i> Copied!';
@@ -456,12 +475,12 @@ function applyModernStyle() {
 
         newPapersContainer.querySelectorAll('.rel-btn').forEach(button => {
             button.addEventListener('click', () => {
-                const currentPaperId = button.dataset.paperId; 
+                const currentPaperId = button.dataset.paperId;
 
                 if (typeof window.openRelatedPapers === 'function') {
                     window.openRelatedPapers(currentPaperId);
                 } else {
-                    const paperElForRelated = document.getElementById(currentPaperId); 
+                    const paperElForRelated = document.getElementById(currentPaperId);
                     if (!paperElForRelated) {
                         console.error("Original paper element not found for related action (fallback):", currentPaperId);
                         alert(`Original paper panel for ${currentPaperId} not found.`);
@@ -521,7 +540,7 @@ function applyModernStyle() {
     originalBodyElementsToHide.forEach(el => {
         if (el) el.style.display = 'none';
     });
-    if(originalPapersContainer) originalPapersContainer.style.display = 'none'; 
+    if(originalPapersContainer) originalPapersContainer.style.display = 'none';
 }
 
 if (document.readyState === "complete" || document.readyState === "interactive") {
